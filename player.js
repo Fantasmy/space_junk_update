@@ -4,7 +4,11 @@ function Ufo () {
     var self = this;
 
     self.position = {x: 250, y: 400};
-    self.direction = {x: 0, y:0}
+    self.direction = {x: 0, y: 0}
+    self.width = self.width;
+    self.height = self.height;
+    // self.xSpeed = 2;
+    // self.ySpeed = 2;
 
 
     
@@ -45,6 +49,9 @@ function Ufo () {
 
 Ufo.prototype.update = function() {
     var self = this;
+
+    // self.xSpeed = 2;
+    // self.ySpeed = 2;
 
     // WITHPOUT LIMITS
     // if(self.rightPressed === true) {

@@ -4,7 +4,7 @@ function Laser () {
     var self = this;
 
     self.position = {x: 250, y: 500};
-    self.direction = {x: 0, y: 0};
+    self.direction = {x: 0, y: -2};
 
     self.shootPressed = false;
 
@@ -29,8 +29,11 @@ Laser.prototype.update = function() {
     var self = this;
 
     // if(self.shootPressed === true) {
-    
-    self.position.y = self.position.y + self.direction.y
+    //     return self.position.y = self.position.y + self.direction.y
+
+
+    self.position.x = 0;
+    self.position.y = self.position.y + self.direction.y;
 
 }
 

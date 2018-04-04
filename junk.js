@@ -2,7 +2,7 @@
 
 var INITIAL_SIZE = 1;
 var GROW_BY = 0.5;
-var MAX_SIZE = 15;
+var MAX_SIZE = 30;
 
 var RANDOM_X = 11;
 var RANDOM_X_OFFSET = -6;
@@ -17,6 +17,8 @@ function Junk() {
   // max grow?
   
   self.size = INITIAL_SIZE;
+  self.width = self.width;
+  self.heigth = self.heigth;
   self.position = {x: Math.random()*500, y: Math.random()*500};
 
   var x = (Math.random() * RANDOM_X) + RANDOM_X_OFFSET;
@@ -27,15 +29,14 @@ function Junk() {
 Junk.prototype.update = function() {
   var self = this;
 
-  self.size = self.size +  GROW_BY;
-
-  // MAXIMUM SIZE?
-  // if (self.size <30) {
-  //   return (self.size + GROW_BY);
-  // } else return (self.size = 30);
-
   self.position.x = self.position.x + self.direction.x;
-  self.position.y = self.position.y + self.direction.y;  
+  self.position.y = self.position.y + self.direction.y;
+
+  if (self.size < MAX_SIZE) {
+     return ((self.size = self.size +  GROW_BY )+ self.position.x); 
+    } else {
+         return (self.size = MAX_SIZE )+ self.position.x;
+        }
 };
 
 
@@ -46,4 +47,4 @@ Junk.prototype.draw = function(ctx) {
   ctx.fillStyle = 'white';
   ctx.fillRect(self.position.x, self.position.y, self.size, self.size);
 
-}
+};
