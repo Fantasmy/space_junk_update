@@ -1,6 +1,6 @@
 'use strict'
 
-var INTERVAL_BETWEEN_JUNK = 300;
+var INTERVAL_BETWEEN_JUNK = 700;
 
 function Game(parentElement) {
   var self = this;
@@ -14,6 +14,7 @@ function Game(parentElement) {
   self.keyUpHandler = false;
   self.keyDowHandler = false;
   // self.score = 0;
+  //self.fuel = 100;
 
 };
 
@@ -61,7 +62,7 @@ Game.prototype.frame = function() {
     self.junk[i].update();
   }
   
-  self.ufo.update();
+ self.ufo.update();
 
   // self.laser.update();
 
@@ -90,7 +91,7 @@ Game.prototype.frame = function() {
   self.score();
   self.fuelText();
 
-  window.requestAnimationFrame(function () {
+  window.requestAnimationFrame(function() {
     self.frame();
   })
 
@@ -104,7 +105,7 @@ Game.prototype.fuelText = function() {
   self.fuelText = function draw () {
     self.ctx.font = '30px serif';
     self.ctx.fillStyle = 'red';
-    self.ctx.fillText('Fuel', 450, 40);    
+    self.ctx.fillText('Fuel', 450, 20);    
   }
 };
 
