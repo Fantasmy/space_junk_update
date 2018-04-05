@@ -25,6 +25,7 @@ function main() {
   function buildTitleScreen() {
     titleScreenElement = createHtml(`
       <div class="title-screen">
+      
         <h1>Space Junk!</h1>
         <button>start game</button>
         <div class="instructions">

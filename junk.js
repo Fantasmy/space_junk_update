@@ -17,8 +17,6 @@ function Junk() {
   // max grow?
   
   self.size = INITIAL_SIZE;
-  self.width = self.width;
-  self.heigth = self.heigth;
   self.position = {x: Math.random()*500, y: Math.random()*420};
 
   var x = (Math.random() * RANDOM_X) + RANDOM_X_OFFSET;

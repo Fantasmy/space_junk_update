@@ -10,16 +10,12 @@ function Laser (x, y) {
 Laser.prototype.update = function() {
   var self = this;
 
-  console.log("update a laser")
-
   self.position.y = self.position.y + self.direction.y--;
 }
 
 
 Laser.prototype.draw = function(ctx) {
   var self = this;
-
-  console.log("draw a laser")
 
   ctx.fillStyle = 'red';
   ctx.fillRect(self.position.x, self.position.y, 5, 8);

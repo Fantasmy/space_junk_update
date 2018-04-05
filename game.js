@@ -1,6 +1,8 @@
 'use strict'
 
 var INTERVAL_BETWEEN_JUNK = 700;
+var FUEL_PER_FRAME = 0.1;
+var COLLISION_PENALTY = 1;
 
 function Game(parentElement) {
   var self = this;
@@ -10,15 +12,17 @@ function Game(parentElement) {
   self.gameScreenElement = null;
   self.ufo = new Ufo;
   self.fuel = new Fuel;
+  self.earth = new Earth;
   self.keyUpHandler = false;
   self.keyDowHandler = false;
-  // self.score = 0;
-  //self.fuel = 100;
+  self.points = 0;
+  self.energy = 1000;
+
 
 };
 
 Game.prototype.build = function() {
-  var self = this;
+  var self = this;  
 
   self.gameScreenElement = createHtml(`
     <div class= "game-screen">
@@ -56,10 +60,12 @@ Game.prototype.frame = function() {
   for (var i = 0; i < self.junk.length; i++) {
     self.junk[i].update();
   }
-  
- self.ufo.update();
 
-  // self.fuel.update();
+  self.energy = Math.floor(self.energy - FUEL_PER_FRAME);
+  
+  self.ufo.update();
+
+  self.earth.update();
 
   self.purgeJunk();
 
@@ -69,33 +75,41 @@ Game.prototype.frame = function() {
 
   self.ctx.clearRect(0, 0, 500, 500);
 
+  self.earth.draw(self.ctx);
+
   for (var i = 0; i < self.junk.length; i++) {
     self.junk[i].draw(self.ctx);
   }
 
   self.ufo.draw(self.ctx);
 
-  self.fuel.draw(self.ctx);
+  self.fuel.draw(self.ctx, self.energy);
 
   self.score();
   self.fuelText();
+  // self.collisionLaser();
+  self.collisionUfo();
 
   window.requestAnimationFrame(function() {
     self.frame();
   })
-
 };
 
 
+Game.prototype.score = function() {
+  var self = this;
+
+  self.ctx.font = '30px serif';
+  self.ctx.fillStyle = 'red';
+  self.ctx.fillText('Score: ' + self.points, 10, 40);    
+};
 
 Game.prototype.fuelText = function() {
   var self = this;
-
-  self.fuelText = function draw () {
-    self.ctx.font = '30px serif';
-    self.ctx.fillStyle = 'blue';
-    self.ctx.fillText('Fuel', 450, 20);    
-  }
+  
+  self.ctx.font = '30px serif';
+  self.ctx.fillStyle = 'blue';
+  self.ctx.fillText('Fuel: ' + self.energy, 300, 20);   
 };
 
 Game.prototype.purgeJunk = function() {
@@ -111,63 +125,65 @@ Game.prototype.purgeJunk = function() {
 };
 
 
-/*
-Game.prototype.collisionDetection = function() {
-  var self = this;
-  // var x = self.position.x;
-  // var y = self.position.y;
-  // var height = self.height;
-  // var width = self.width;
 
-  // var junk = self.junk;
-  // var ufo = self.ufo;
-
-  // var sideN = junk.x < ufo.x + ufo.width;
-  // var sideS = junk.x + junk.width > ufo.x;
-  // var sideE = junk.y < ufo.y + ufo.height;
-  // var sideW = junk.height + junk.y > ufo.y;
-
-
-
-  // var junk = {x: x, y: y, width: width, height: height}
-  // var ufo = {x: x, y: y, width: width, height: height}
-
-  // ufo.bind(frame, function() { 
-
-  // self.junk.x = self.junk.position.x;
-  // self.junk.y = self.junk.position.y;
-  // self.ufo.x = self.ufo.position.x;
-  // self.ufo.y = self.ufo.position.y;  
-
-  var sideN = self.junk.position.x < (self.ufo.position.x + self.ufo.width);
-  var sideS = (self.junk.position.x + self.junk.width) > self.ufo.position.x;
-  var sideE = self.junk.position.y < (self.ufo.position.y + self.ufo.height);
-  var sideW = (self.junk.height + self.junk.position.y) > self.ufo.position.y;
-  
-  self.junk.forEach = function() {
-
-  if ( sideN && sideS && sideE && sideW) {
-    //collision detected
-  alert('collision');
-  } else {
-    ;
-  }
-}
-};
-*/
-
-
-//SCORE DRAW
-
-Game.prototype.score = function() {
+Game.prototype.collisionUfo = function() {
   var self = this;
 
-  self.score = function draw () {
-    self.ctx.font = '38px serif';
-    self.ctx.fillStyle = 'red';
-    self.ctx.fillText('Score: ', 10, 40);    
-  }
+  self.junk.forEach(function(junk) {
+    var ufo = {
+      sideW: self.ufo.position.x,
+      sideE: self.ufo.position.x + self.ufo.width,
+      sideN: self.ufo.position.y,
+      sideS: self.ufo.position.y + self.ufo.height
+    }
+    
+    var junk = {
+      sideW: junk.position.x,
+      sideE: junk.position.x + junk.size,
+      sideN: junk.position.y,
+      sideS: junk.position.y + junk.size
+
+    }
+
+    if(junk.sideW < ufo.sideE && junk.sideE > ufo.sideW && junk.sideN < ufo.sideS && junk.sideS > ufo.sideN) {
+        self.points = self.points - COLLISION_PENALTY;
+      }
+  })
 };
+
+
+
+
+Game.prototype.collisionLaser = function() {
+  var self = this;
+
+  self.junk.forEach(function(junk) {
+        
+    var junk = {
+      sideW: junk.position.x,
+      sideE: junk.position.x + junk.size,
+      sideN: junk.position.y,
+      sideS: junk.position.y + size
+    }
+
+    var laser = {
+      sideW: self.laser.position.x,
+      sideE: self.laser.position.x + self.laser.width,
+      sideN: self.laser.position.y,
+      sideS: self.laser.position.y + self.laser.height
+    }
+
+    // if(laser.sideW < junk.sideE && laser.sideE > junk.sideW && laser.sideN < junk.sideS && laser.sideS > junk.sideN) {
+    //   console.log("colission")
+    // }
+
+    if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
+        console.log("colission")
+      }
+    
+  })
+};
+
 
 
 Game.prototype.onEnded = function() {

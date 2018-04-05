@@ -23,7 +23,9 @@ html {
     line-height: 147%;
   }
   
-  h1 {}
+  h1 {
+    text-align: center;
+  }
   
   h2 {}
   
@@ -31,6 +33,7 @@ html {
   
   p {
     margin: 0;
+    text-align: center;
   }
   
   
@@ -60,6 +63,10 @@ html {
   .section {
     margin-bottom: 20px;
     padding-top: 20px;
+  }
+
+  .button {
+    text-align: center;
   }
   
   @media (min-width: 768px) {
