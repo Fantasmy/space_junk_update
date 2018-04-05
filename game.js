@@ -9,7 +9,6 @@ function Game(parentElement) {
   self.junk = [];
   self.gameScreenElement = null;
   self.ufo = new Ufo;
-  // self.laser = new Laser;
   self.fuel = new Fuel;
   self.keyUpHandler = false;
   self.keyDowHandler = false;
@@ -48,10 +47,6 @@ Game.prototype.start = function() {
     self.junk.push(junk);
   }, INTERVAL_BETWEEN_JUNK);
 
-
-  // var junk = new Junk();
-  // self.junk.push(junk);
-
   self.frame();
 };
 
@@ -64,13 +59,10 @@ Game.prototype.frame = function() {
   
  self.ufo.update();
 
-  // self.laser.update();
-
   // self.fuel.update();
 
   self.purgeJunk();
 
-  // self.purgeLaser();
 
   // self.collisionDetection();
 
@@ -83,10 +75,7 @@ Game.prototype.frame = function() {
 
   self.ufo.draw(self.ctx);
 
-  // self.laser.draw(self.ctx);
-
   self.fuel.draw(self.ctx);
-
 
   self.score();
   self.fuelText();
@@ -104,7 +93,7 @@ Game.prototype.fuelText = function() {
 
   self.fuelText = function draw () {
     self.ctx.font = '30px serif';
-    self.ctx.fillStyle = 'red';
+    self.ctx.fillStyle = 'blue';
     self.ctx.fillText('Fuel', 450, 20);    
   }
 };
@@ -112,26 +101,14 @@ Game.prototype.fuelText = function() {
 Game.prototype.purgeJunk = function() {
   var self = this;
 
-  self.junk = self.junk.filter (function(junk) {
-    var isXwithin = junk.position.x < 500 && junk.position.x >= 0;
-    var isYWithin = junk.position.y < 500 && junk.position.y >= 0;
+  self.junk = self.junk.filter (function(item) {
+    var isXwithin = item.position.x < 500 && item.position.x >= 0;
+    var isYWithin = item.position.y < 500 && item.position.y >= 0;
     if (isXwithin && isYWithin) {
       return true;
     }
   })
 };
-
-// Game.prototype.purgeLaser = function() {
-//   var self = this;
-
-//   self.laser = self.laser.filter (function(laser) {
-//     var isXwithin = laser.position.x < 500 && laser.position.x >=0;
-//     var isYWithin = laser.position.y < 500 && laser.position.y >= 0;
-//       if(isXwithin && isYWithin) {
-//         return true;
-//       }
-//   })
-// }
 
 
 /*

@@ -5,21 +5,17 @@ function Ufo () {
 
   self.position = {x: 250, y: 400};
   self.direction = {x: 0, y: 0}
-  self.speed = 2;
+  self.speed = 4;
 
   self.width = 30;
   self.height = 30;
   self.lasers = [];
-  // self.xSpeed = 2;
-  // self.ySpeed = 2;
-
-
   
   self.rightPressed = false;
   self.leftPressed = false;
   self.upPressed = false;
   self.downPressed = false;
-  // self.shootPressed = false;
+
 
   self.keyDownHandler = function(event) {
     if(event.keyCode === 39) {
@@ -56,7 +52,7 @@ Ufo.prototype.update = function() {
   var self = this;
 
   if (self.rightPressed === true) {
-    if (self.position.x < 470) {
+    if (self.position.x < 450) {
       self.position.x = self.position.x + self.speed;
     };
 
@@ -77,7 +73,7 @@ Ufo.prototype.update = function() {
   }
 
   if (self.shootPressed === true) {
-    var laser = new Laser(self.position.x, self.position.y);
+    var laser = new Laser(self.position.x + 23, self.position.y - 4);
     self.shootPressed = false;
     self.lasers.push(laser);
   }
@@ -85,26 +81,29 @@ Ufo.prototype.update = function() {
   for (var i = 0; i < self.lasers.length; i++) {
     self.lasers[i].update();
   }
+
+  self.purgeLasers(self.lasers);
 };
+
+Ufo.prototype.purgeLasers = function() {
+  var self = this;
+  self.lasers = self.lasers.filter (function(item) {
+    var isYWithin = item.position.y < 500 && item.position.y >= 0;
+    if (isYWithin) {
+      return true;
+    }
+  })
+}
 
 
 Ufo.prototype.draw = function (ctx) {
   var self = this;
-  // self.deltaX = 0;
-  // self.deltaY = 0;
-
+  
   ctx.fillStyle = 'green';
-  ctx.fillRect(self.position.x, self.position.y, 30, 30);
-  // ctx.beginPath();
-  // ctx.moveTo(250 , 250 );
-  // ctx.lineTo(250 , 750 );
-  // ctx.lineTo(75 , 500 );
-  // ctx.closePath();
+  ctx.fillRect(self.position.x, self.position.y, 50, 30);
   ctx.fill();
 
   for (var i = 0; i < self.lasers.length; i++) {
     self.lasers[i].draw(ctx);
   }
- 
-  
 };

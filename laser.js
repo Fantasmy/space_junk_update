@@ -22,5 +22,5 @@ Laser.prototype.draw = function(ctx) {
   console.log("draw a laser")
 
   ctx.fillStyle = 'red';
-  ctx.fillRect(self.position.x, self.position.y, 5, 5);
+  ctx.fillRect(self.position.x, self.position.y, 5, 8);
 }

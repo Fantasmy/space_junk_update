@@ -1,6 +1,6 @@
 'use strict'
 
-var INITIAL_SIZE = 100;
+// var INITIAL_SIZE = 100;
 // var GROW_BY = -0.5;
 // var MAX_SIZE = 100;
 
@@ -12,7 +12,7 @@ function Fuel() {
 
   self.speed = 1;
 
-  self.value = 0;
+  self.value = 100;
   self.targetValue = 0;
 
 //   self.size = INITIAL_SIZE;
@@ -36,7 +36,7 @@ Fuel.prototype.update = function() {
 Fuel.prototype.change = function() {
   var self = this;
 
-  self.targetValue += amount;
+  self.targetValue -= amount;
 };
 
 Fuel.prototype.move = function() {
@@ -56,51 +56,6 @@ Fuel.prototype.move = function() {
 Fuel.prototype.draw = function(ctx) {
   var self = this;
 
-  ctx.fillStyle = 'red';
+  ctx.fillStyle = 'blue';
   ctx.fillRect(410, 25, 100, 20);
 };
-
-/*
-
-// var INITIAL_SIZE = 100;
-var GROW_BY = -0.001;
-
-function Fuel() {
-    var self = this;
-
-    // self.size = INITIAL_SIZE;
-    self.position = {x: 400, y:50};
-    // self.direction = {x: 0, y: 0}
-    self.width = 100;
-    self.height = 20;
-
-};
-
-Fuel.prototype.update = function() {
-    var self = this;
-
-    self.size = self.size;
-
-    self.position = {x:400, y:50}
-    // self.position.x = self.position.x + self.direction.x;
-    // self.position.y = self.position.y + self.direction.y;
-    self.width = function (ctx) {
-        if(self.width >= 0) {
-            return self.width = (self.width + GROW_BY);
-        } else {
-            return console.log('Game OVER');
-        }
-    }
-
-
-};
-
-
-Fuel.prototype.draw = function(ctx) {
-    var self = this;
-
-    ctx.fillStyle = 'red';
-    ctx.fillRect(self.position.x, self.position.y, 100, 20)
-    ctx.fill();
-}
-*/
