@@ -25,6 +25,7 @@ html {
   
   h1 {
     text-align: center;
+    padding-top: 30px;
   }
   
   h2 {}
@@ -65,9 +66,10 @@ html {
     padding-top: 20px;
   }
 
-  .button {
-    text-align: center;
+  .instructions {
+    padding-top: 50px;
   }
+
   
   @media (min-width: 768px) {
     .container {
@@ -76,7 +78,17 @@ html {
     }
   }
   
+
+  #ufo {
+    display: none;
+  }
   
   
   
   /* ---- components ---- */
+
+  button { 
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+} 

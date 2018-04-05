@@ -3,6 +3,7 @@
 var INTERVAL_BETWEEN_JUNK = 700;
 var FUEL_PER_FRAME = 0.1;
 var COLLISION_PENALTY = 1;
+var HIT_POINTS = 10; 
 
 function Game(parentElement) {
   var self = this;
@@ -17,8 +18,8 @@ function Game(parentElement) {
   self.keyDowHandler = false;
   self.points = 0;
   self.energy = 1000;
-
-
+  self.laser = new Laser(self.ufo.position.x + 23, self.ufo.position.y - 4);
+  
 };
 
 Game.prototype.build = function() {
@@ -62,7 +63,11 @@ Game.prototype.frame = function() {
   }
 
   self.energy = Math.floor(self.energy - FUEL_PER_FRAME);
-  
+
+  // if (self.energy <= 0) {
+  //   game.onEnded();
+  // }
+
   self.ufo.update();
 
   self.earth.update();
@@ -90,6 +95,7 @@ Game.prototype.frame = function() {
   // self.collisionLaser();
   self.collisionUfo();
 
+
   window.requestAnimationFrame(function() {
     self.frame();
   })
@@ -101,7 +107,7 @@ Game.prototype.score = function() {
 
   self.ctx.font = '30px serif';
   self.ctx.fillStyle = 'red';
-  self.ctx.fillText('Score: ' + self.points, 10, 40);    
+  self.ctx.fillText('Score: ' + self.points, 10, 50);    
 };
 
 Game.prototype.fuelText = function() {
@@ -158,13 +164,6 @@ Game.prototype.collisionLaser = function() {
   var self = this;
 
   self.junk.forEach(function(junk) {
-        
-    var junk = {
-      sideW: junk.position.x,
-      sideE: junk.position.x + junk.size,
-      sideN: junk.position.y,
-      sideS: junk.position.y + size
-    }
 
     var laser = {
       sideW: self.laser.position.x,
@@ -172,13 +171,17 @@ Game.prototype.collisionLaser = function() {
       sideN: self.laser.position.y,
       sideS: self.laser.position.y + self.laser.height
     }
-
-    // if(laser.sideW < junk.sideE && laser.sideE > junk.sideW && laser.sideN < junk.sideS && laser.sideS > junk.sideN) {
-    //   console.log("colission")
-    // }
+        
+    var junk = {
+      sideW: junk.position.x,
+      sideE: junk.position.x + junk.size,
+      sideN: junk.position.y,
+      sideS: junk.position.y + junk.size
+    }
 
     if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
-        console.log("colission")
+        consoe.log('colission');  
+      // self.points = self.points + HIT_POINTS;
       }
     
   })

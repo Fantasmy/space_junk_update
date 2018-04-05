@@ -29,7 +29,10 @@ function main() {
         <h1>Space Junk!</h1>
         <button>start game</button>
         <div class="instructions">
-          <p>figure it out</p>
+        <p>INSTRUTIONS:</p>
+        <p>1.Use arrow keys to move [left, right, up, down]</p>
+        <p>2.Shoot the junk to recycle and get score + fuel!</p>
+        <p>3.Avoid the junk or you will lose score!</p>
         </div>
       </div>
     `);
@@ -84,8 +87,9 @@ function main() {
   function buildGameOverScreen() {
     gameOverScreenElement = createHtml(`
       <div class="game-over-screen">
-        <h1>Score: 888</h1>
-        <button>restart game</button>
+        <h1>GAME OVER = Universe doomed!</h1>
+        <h1>Score: `+ self.points +`</h1>
+        <button>Restart game</button>
       </div>
     `);
     mainContentElement.appendChild(gameOverScreenElement);

@@ -7,7 +7,7 @@ function Ufo () {
   self.direction = {x: 0, y: 0}
   self.speed = 4;
 
-  self.width = 30;
+  self.width = 50;
   self.height = 30;
   self.lasers = [];
   
@@ -99,9 +99,17 @@ Ufo.prototype.purgeLasers = function() {
 Ufo.prototype.draw = function (ctx) {
   var self = this;
   
+  
   ctx.fillStyle = 'green';
   ctx.fillRect(self.position.x, self.position.y, 50, 30);
   ctx.fill();
+
+  // var img = new Image();
+  // img.onload = function() {
+  //       ctx.drawImage(self.Image, 0, 0, self.width, self.height);
+  // }
+
+  // img.src = './img/ufo.png';
 
   for (var i = 0; i < self.lasers.length; i++) {
     self.lasers[i].draw(ctx);

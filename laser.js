@@ -5,6 +5,9 @@ function Laser (x, y) {
 
   self.position = {x: x, y:y}
   self.direction = {x: 0, y: -2};
+
+  self.width = 5;
+  self.height = 8;
 }
 
 Laser.prototype.update = function() {
