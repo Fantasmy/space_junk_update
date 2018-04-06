@@ -4,6 +4,7 @@ var INTERVAL_BETWEEN_JUNK = 700;
 var FUEL_PER_FRAME = 0.1;
 var COLLISION_PENALTY = 1;
 var HIT_POINTS = 10; 
+var FUEL_ENERGY = 100;
 
 function Game(parentElement) {
   var self = this;
@@ -19,9 +20,7 @@ function Game(parentElement) {
   self.points = 0;
   self.energy = 1000;
   self.laser = [];
-  self.laser = new Laser(self.ufo.position.x + 23, self.ufo.position.y - 4);
-  
-  
+  self.laser = new Laser(self.ufo.position.x + 23, self.ufo.position.y - 4);  
 };
 
 Game.prototype.build = function() {
@@ -48,7 +47,7 @@ Game.prototype.start = function() {
   //   self.junk.push(junk);
   // }, 2000);
 
-  window.setInterval (function() {
+  self.createJunkIntervalId = window.setInterval (function() {
 
     var junk = new Junk();
     self.junk.push(junk);
@@ -68,7 +67,8 @@ Game.prototype.frame = function() {
   self.energy = Math.floor(self.energy - FUEL_PER_FRAME);
 
   if (self.energy < 0) {
-    alert('GAME OVER');
+    self.callback();
+    return;
   }
 
   self.ufo.update();
@@ -92,8 +92,8 @@ Game.prototype.frame = function() {
 
   self.score();
   self.fuelText();
-  // self.collisionLaser();
   self.collisionUfo();
+  // self.collisionLaser();
 
 
   window.requestAnimationFrame(function() {
@@ -162,13 +162,13 @@ Game.prototype.collisionUfo = function() {
 Game.prototype.collisionLaser = function() {
   var self = this;
 
-  self.laser.forEach(function(laser) {
+  for (var j = 0; j < self.junk.length; j++) {
 
     var laser = {
-      sideW: self.laser.position.x,
-      sideE: self.laser.position.x + self.laser.width,
-      sideN: self.laser.position.y,
-      sideS: self.laser.position.y + self.laser.height
+      sideW: laser[j].position.x,
+      sideE: laser[j].position.x + laser[j].width,
+      sideN: laser[j].position.y,
+      sideS: laser[j].position.y + laser[j].height
     }
 
   for (var i = 0; i < self.junk.length; i++) {
@@ -183,11 +183,39 @@ Game.prototype.collisionLaser = function() {
   
   if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
         console.log('colission');  
-      // self.points = self.points + HIT_POINTS;
+      // (self.points = self.points + HIT_POINTS) && (self.energy = self.energy + FUEL_ENERGY;);
       }
     
-  })
+  }
 };
+
+
+// Game.prototype.collisionLaser = function() {
+//   var self = this;
+
+//   self.laser.forEach(function() {
+
+//     var laser = {
+//       sideW: self.laser.position.x,
+//       sideE: self.laser.position.x + self.laser.width,
+//       sideN: self.laser.position.y,
+//       sideS: self.laser.position.y + self.laser.height
+//     }
+        
+//     var junk = {
+//       sideW: junk.position.x,
+//       sideE: junk.position.x + junk.size,
+//       sideN: junk.position.y,
+//       sideS: junk.position.y + junk.size
+//     }
+
+//     if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
+//         console.log('colission');  
+//       // self.points = self.points + HIT_POINTS;
+//       }
+    
+//   })
+// };
 
 
 // Game.prototype.collisionLaser = function() {
@@ -213,14 +241,15 @@ Game.prototype.collisionLaser = function() {
 //         console.log('colission');  
 //       // self.points = self.points + HIT_POINTS;
 //       }
-    
 //   })
 // };
 
 
-Game.prototype.onEnded = function() {
+Game.prototype.onEnded = function(cb) {
   var self = this;
   
+  // window.clearInterval(self.createJunkIntervalId);
+  self.callback = cb; 
   
 };
 

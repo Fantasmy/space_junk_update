@@ -19,4 +19,4 @@ Fuel.prototype.draw = function(ctx, fuel) {
   ctx.fillStyle = 'blue';
   ctx.fillRect(self.position.x, self.position.y, self.width, self.height);
 
-};
+}; 

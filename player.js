@@ -1,5 +1,7 @@
 'use strict'
 
+//todo var keys
+
 function Ufo () {
   var self = this;
 
@@ -27,6 +29,8 @@ function Ufo () {
     } else if(event.keyCode === 40) {
       self.downPressed = true;
     } else if(event.keyCode === 32) {
+      // self.laserSound = new Audio('url');
+      // self.laserSound.play();
       self.shootPressed = true;
     }
   }

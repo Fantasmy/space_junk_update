@@ -10,7 +10,7 @@ function createHtml(html) {
 function main() {
   var game;
   var mainContentElement = document.getElementById('main-content');
-
+  // var music = new Audio('url');
 
   // -- TITLE SCREEN
 
@@ -56,6 +56,7 @@ function main() {
   }
 
   function buildGameScreen() {
+    // music.play();
     game = new Game(mainContentElement);
     game.build();
     game.start();
@@ -63,7 +64,7 @@ function main() {
       gameEnded();
     });
     console.log("here we will play the game")
-    //window.setTimeout(gameEnded, 1000);
+    // window.setTimeout(gameEnded, 1000);
   }
 
   function destroyGameScreen() {
