@@ -93,7 +93,7 @@ Game.prototype.frame = function() {
   self.score();
   self.fuelText();
   self.collisionUfo();
-  // self.collisionLaser();
+  self.collisionLaser();
 
 
   window.requestAnimationFrame(function() {
@@ -107,7 +107,8 @@ Game.prototype.score = function() {
 
   self.ctx.font = '30px serif';
   self.ctx.fillStyle = 'red';
-  self.ctx.fillText('Score: ' + self.points, 10, 50);    
+  self.ctx.fillText('Score: ' + self.points, 10, 50);  
+  return self.points;  
 };
 
 
@@ -137,14 +138,15 @@ Game.prototype.collisionUfo = function() {
   var self = this;
 
   self.junk.forEach(function(junk) {
-    var ufo = {
+    
+    var ufoShape = {
       sideW: self.ufo.position.x,
       sideE: self.ufo.position.x + self.ufo.width,
       sideN: self.ufo.position.y,
       sideS: self.ufo.position.y + self.ufo.height
     }
     
-    var junk = {
+    var junkShape = {
       sideW: junk.position.x,
       sideE: junk.position.x + junk.size,
       sideN: junk.position.y,
@@ -152,7 +154,7 @@ Game.prototype.collisionUfo = function() {
 
     }
 
-    if(junk.sideW < ufo.sideE && junk.sideE > ufo.sideW && junk.sideN < ufo.sideS && junk.sideS > ufo.sideN) {
+    if(junkShape.sideW < ufoShape.sideE && junkShape.sideE > ufoShape.sideW && junkShape.sideN < ufoShape.sideS && junkShape.sideS > ufoShape.sideN) {
         self.points = self.points - COLLISION_PENALTY;
       }
   })
@@ -162,87 +164,35 @@ Game.prototype.collisionUfo = function() {
 Game.prototype.collisionLaser = function() {
   var self = this;
 
-  for (var j = 0; j < self.junk.length; j++) {
+    if(self.ufo.lasers) {
+      self.ufo.lasers.forEach(function(laser, indexLaser) {
 
-    var laser = {
-      sideW: laser[j].position.x,
-      sideE: laser[j].position.x + laser[j].width,
-      sideN: laser[j].position.y,
-      sideS: laser[j].position.y + laser[j].height
-    }
-
-  for (var i = 0; i < self.junk.length; i++) {
-        
-    var junk = {
-      sideW: self.junk[i].position.x,
-      sideE: self.junk[i].position.x + self.junk[i].size,
-      sideN: self.junk[i].position.y,
-      sideS: self.junk[i].position.y + self.junk[i].size
-    }
-  }
-  
-  if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
-        console.log('colission');  
-      // (self.points = self.points + HIT_POINTS) && (self.energy = self.energy + FUEL_ENERGY;);
+      var laserShape = {
+        sideW: laser.position.x,
+        sideE: laser.position.x + laser.width,
+        sideN: laser.position.y,
+        sideS: laser.position.y + laser.height
       }
     
-  }
+      self.junk.forEach(function(junk, indexJunk) {
+          
+          var junkShape = {
+            sideW: junk.position.x,
+            sideE: junk.position.x + junk.size,
+            sideN: junk.position.y,
+            sideS: junk.position.y + junk.size
+          }
+
+          if(junkShape.sideW < laserShape.sideE && junkShape.sideE > laserShape.sideW && junkShape.sideN < laserShape.sideS && junkShape.sideS > laserShape.sideN) {
+            self.junk.splice(indexJunk, 1);
+            self.ufo.lasers.splice(indexLaser, 1);
+            self.points += 50;
+            self.energy += 100;
+          }
+        });
+      });
+    }
 };
-
-
-// Game.prototype.collisionLaser = function() {
-//   var self = this;
-
-//   self.laser.forEach(function() {
-
-//     var laser = {
-//       sideW: self.laser.position.x,
-//       sideE: self.laser.position.x + self.laser.width,
-//       sideN: self.laser.position.y,
-//       sideS: self.laser.position.y + self.laser.height
-//     }
-        
-//     var junk = {
-//       sideW: junk.position.x,
-//       sideE: junk.position.x + junk.size,
-//       sideN: junk.position.y,
-//       sideS: junk.position.y + junk.size
-//     }
-
-//     if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
-//         console.log('colission');  
-//       // self.points = self.points + HIT_POINTS;
-//       }
-    
-//   })
-// };
-
-
-// Game.prototype.collisionLaser = function() {
-//   var self = this;
-
-//   self.junk.forEach(function(junk) {
-
-//     var laser = {
-//       sideW: self.laser.position.x,
-//       sideE: self.laser.position.x + self.laser.width,
-//       sideN: self.laser.position.y,
-//       sideS: self.laser.position.y + self.laser.height
-//     }
-        
-//     var junk = {
-//       sideW: junk.position.x,
-//       sideE: junk.position.x + junk.size,
-//       sideN: junk.position.y,
-//       sideS: junk.position.y + junk.size
-//     }
-
-//     if(junk.sideW < laser.sideE && junk.sideE > laser.sideW && junk.sideN < laser.sideS && junk.sideS > laser.sideN) {
-//         console.log('colission');  
-//       // self.points = self.points + HIT_POINTS;
-//       }
-//   })
-// };
 
 
 Game.prototype.onEnded = function(cb) {

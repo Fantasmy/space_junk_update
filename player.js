@@ -7,7 +7,7 @@ function Ufo () {
 
   self.position = {x: 250, y: 400};
   self.direction = {x: 0, y: 0}
-  self.speed = 4;
+  self.speed = 6;
 
   self.width = 50;
   self.height = 30;

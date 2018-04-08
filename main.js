@@ -50,9 +50,9 @@ function main() {
   // -- GAME SCREEN
 
 
-  function gameEnded() {
+  function gameEnded(gamePoints) {
     destroyGameScreen();
-    buildGameOverScreen();
+    buildGameOverScreen(gamePoints);
   }
 
   function buildGameScreen() {
@@ -61,7 +61,7 @@ function main() {
     game.build();
     game.start();
     game.onEnded(function () {
-      gameEnded();
+      gameEnded(this.points);
     });
     console.log("here we will play the game")
     // window.setTimeout(gameEnded, 1000);
@@ -85,11 +85,11 @@ function main() {
 
 //   <h1>Score: `+ game.score +`</h1>
 
-  function buildGameOverScreen() {
+  function buildGameOverScreen(gamePoints) {
     gameOverScreenElement = createHtml(`
       <div class="game-over-screen">
         <h1>GAME OVER = Universe doomed!</h1>
-        <h1>Score: `+ self.points +`</h1>
+        <h1>Score: `+ gamePoints +`</h1>
         <button>Restart game</button>
       </div>
     `);
