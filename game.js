@@ -67,7 +67,7 @@ Game.prototype.frame = function() {
   self.energy = Math.floor(self.energy - FUEL_PER_FRAME);
 
   if (self.energy < 0) {
-    self.callback();
+    self.callback(self.points);
     return;
   }
 

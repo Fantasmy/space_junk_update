@@ -31,7 +31,7 @@ function main() {
         <div class="instructions">
         <p>INSTRUTIONS:</p>
         <p>1.Use arrow keys to move [left, right, up, down]</p>
-        <p>2.Shoot the junk to recycle and get score + fuel!</p>
+        <p>2.Shoot the junk [space key] to recycle and get points + fuel!</p>
         <p>3.Avoid the junk or you will lose score!</p>
         </div>
       </div>
@@ -60,8 +60,8 @@ function main() {
     game = new Game(mainContentElement);
     game.build();
     game.start();
-    game.onEnded(function () {
-      gameEnded(this.points);
+    game.onEnded(function (points) {
+      gameEnded(points);
     });
     console.log("here we will play the game")
     // window.setTimeout(gameEnded, 1000);
@@ -88,7 +88,8 @@ function main() {
   function buildGameOverScreen(gamePoints) {
     gameOverScreenElement = createHtml(`
       <div class="game-over-screen">
-        <h1>GAME OVER = Universe doomed!</h1>
+        <h1>GAME OVER</h1>
+        <h1>The Universe doomed!</h1>
         <h1>Score: `+ gamePoints +`</h1>
         <button>Restart game</button>
       </div>
