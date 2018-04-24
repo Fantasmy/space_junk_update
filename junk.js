@@ -1,5 +1,7 @@
 'use strict'
 
+// -- todo pictures
+
 var INITIAL_SIZE = 1;
 var GROW_BY = 0.3;
 var MAX_SIZE = 30;
